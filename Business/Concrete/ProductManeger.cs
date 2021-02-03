@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using DataAccess.Abstract;
+using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -7,31 +8,31 @@ using System.Text;
 
 namespace Business.Concrete
 {
-    public class ProductManeger : IProductService
+    public class ProductManager : IProductService
     {
-        IProductDal _productDal;   //soyut nesneyle bağlantı kuruyoruz ne inmemory ne entity framework adı geçecek
+        IProductDal _productDal; //soyut nesneyle bağlant kuruyoruz ne inmemory  ne entity framework adı geçecek
 
-        public ProductManeger(IProductDal productDal)
+        public ProductManager(IProductDal productDal)
         {
             _productDal = productDal;
         }
 
         public List<Product> GetAll()
         {
-            //iş kodları
-            //Yetkisi var mı? gibi
+            //İş kodları
+            //Yetkisi var mı?
 
             return _productDal.GetAll();
         }
 
-        public List<Product> GetAllByCategoyId(int id)
+        public List<Product> GetAllByCategoryId(int id)
         {
             return _productDal.GetAll(p => p.CategoryId == id);
         }
 
         public List<Product> GetByUnitPrice(decimal min, decimal max)
         {
-            return _productDal.GetAll(p => p.UnitPrice>=min && p.UnitPrice<=max);
+            return _productDal.GetAll(p => p.UnitPrice >= min && p.UnitPrice <= max);
         }
     }
 }
