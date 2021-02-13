@@ -35,6 +35,7 @@ namespace WebAPI.Controllers
         //Loosely coupled : Gevşek bağlılık (bir bağlılık var ama soyuta bağlılık. manageri değiştirirsek sorunla karşılaşmıcaz)
         //naming convention
         //IoC Container : Inversion of Control
+
         IProductService _productService;
 
         public ProductsController(IProductService productService)
