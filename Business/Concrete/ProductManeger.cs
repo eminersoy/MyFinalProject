@@ -38,9 +38,9 @@ namespace Business.Concrete
         {
             //İş kodları
             //Yetkisi var mı?
-            if (DateTime.Now.Hour==22)
+            if (DateTime.Now.Hour == 1)
             {
-                return new ErrorDataResult<List<Product>>(Messages.MaintenceTime); //diyelim ki saat 22 de ürünlerin listelenmesini kapatmak istiyoruz
+                return new ErrorDataResult<List<Product>>(Messages.MaintenceTime); //diyelim ki saat 23 de ürünlerin listelenmesini kapatmak istiyoruz
             }
 
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(),Messages.ProductListed);
