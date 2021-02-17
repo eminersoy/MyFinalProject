@@ -1,10 +1,14 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using Entities.DTOs;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,15 +24,28 @@ namespace Business.Concrete
             _productDal = productDal;
         }
 
+        [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
             //business codes
+            //validation
 
-            if (product.ProductName.Length<2)
-            {
-                //magic string : burdaki mesaj metnini ayrı ayrı yazmak değişiklik yapıldığında unutulan yerlerde standart olmayan mesajlar çıkmasına yol açar
-                return new ErrorResult(Messages.ProductNameInvalid);
-            }
+            //////if (product.UnitPrice<=0)
+            //////{
+            //////    return new ErrorResult(Messages.UnitPriceInvalid);      //ProductValidator u yazınca burayı çıkarttık
+            //////}
+
+            //////if (product.ProductName.Length<2)
+            //////{
+            //////    //magic string : burdaki mesaj metnini ayrı ayrı yazmak değişiklik yapıldığında unutulan yerlerde standart olmayan mesajlar çıkmasına yol açar
+            //////    return new ErrorResult(Messages.ProductNameInvalid);
+            //////}
+
+
+            //ValidationTool.Validate(new ProductValidator(), product);       //yukarıya [ValidationAspect(typeof(ProductValidator)] eklediğimizde sildik
+
+            //business codes
+
             _productDal.Add(product);
 
             return new SuccessResult(Messages.ProductAdded);
@@ -43,7 +60,7 @@ namespace Business.Concrete
                 return new ErrorDataResult<List<Product>>(Messages.MaintenceTime); //diyelim ki saat 23 de ürünlerin listelenmesini kapatmak istiyoruz
             }
 
-            return new SuccessDataResult<List<Product>>(_productDal.GetAll(),Messages.ProductListed);
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.ProductListed);
         }
 
         public IDataResult<List<Product>> GetAllByCategoryId(int id)
