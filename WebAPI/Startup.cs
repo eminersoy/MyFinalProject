@@ -1,5 +1,7 @@
 using Business.Abstract;
 using Business.Concrete;
+using Core.DependencyResolvers;
+using Core.Extensions;
 using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT;
@@ -42,7 +44,7 @@ namespace WebAPI
             //services.AddSingleton<IProductService,ProductManager>();    // 36 ve 37. satýrý Autofac e geçerken comentladýk
             //services.AddSingleton<IProductDal, EfProductDal>();
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();   core dependencyResolver ýn içine alýnca bunu sildik
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -60,7 +62,8 @@ namespace WebAPI
                         IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
                     };
                 });
-            ServiceTool.Create(services);
+
+            services.AddDependencyResolvers(new ICoreModule[] { new CoreModule() });
 
         }
 
