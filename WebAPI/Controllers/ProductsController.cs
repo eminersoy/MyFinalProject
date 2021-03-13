@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
@@ -48,7 +49,10 @@ namespace WebAPI.Controllers
         {
             //Swagger
             //Dependency chain : bağımlılık zinciri
-           //IProductService productService = new ProductManager(new EfProductDal());  (bu satırı 36 satırı eklediğimiz için coment ettik)
+            //IProductService productService = new ProductManager(new EfProductDal());  (bu satırı 36 satırı eklediğimiz için coment ettik)
+
+            //Thread.Sleep(1000);  spinner ı denemek için yazdık
+
             var result = _productService.GetAll();
             if (result.Success)
             {
@@ -62,6 +66,30 @@ namespace WebAPI.Controllers
         public IActionResult GetById(int id)
         {
             var result = _productService.GetById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("getbycategory")]
+        public IActionResult GetByCategory(int categoryId)
+        {
+            var result = _productService.GetAllByCategoryId(categoryId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("getproductdetails")]
+        public IActionResult GetProductDetails(int categoryId)
+        {
+            var result = _productService.GetProductDetails();
             if (result.Success)
             {
                 return Ok(result);

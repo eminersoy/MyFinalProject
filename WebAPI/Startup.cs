@@ -45,6 +45,8 @@ namespace WebAPI
             //services.AddSingleton<IProductDal, EfProductDal>();
 
             //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();   core dependencyResolver ýn içine alýnca bunu sildik
+           
+            services.AddCors();
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -76,6 +78,8 @@ namespace WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
 
             app.UseHttpsRedirection();
 

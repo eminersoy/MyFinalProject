@@ -78,7 +78,7 @@ namespace Business.Concrete
         {
             //İş kodları
             //Yetkisi var mı?
-            if (DateTime.Now.Hour == 1)
+            if (DateTime.Now.Hour == 4)
             {
                 return new ErrorDataResult<List<Product>>(Messages.MaintenceTime); //diyelim ki saat 23 de ürünlerin listelenmesini kapatmak istiyoruz
             }
